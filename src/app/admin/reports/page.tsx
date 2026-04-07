@@ -14,6 +14,7 @@ import {
     Calendar
 } from "lucide-react";
 import { formatPKR } from "@/lib/ledger";
+import { cn } from "@/lib/utils";
 
 export default function ReportsPage() {
     return (
@@ -144,5 +145,3 @@ export default function ReportsPage() {
         </div>
     );
 }
-
-import { cn } from "@/lib/utils";
