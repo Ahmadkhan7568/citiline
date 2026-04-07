@@ -19,10 +19,23 @@ import {
 } from "lucide-react";
 import { generateSecureCredentials } from "@/lib/actions/auth";
 
+interface Staff {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    status: string;
+}
+
+interface SecureCredentials {
+    tempPassword: string;
+    portalUrl: string;
+}
+
 export default function UserManagement() {
-    const [staff, setStaff] = useState<any[]>([]);
+    const [staff, setStaff] = useState<Staff[]>([]);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    const [generatedKey, setGeneratedKey] = useState<any>(null);
+    const [generatedKey, setGeneratedKey] = useState<SecureCredentials | null>(null);
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
