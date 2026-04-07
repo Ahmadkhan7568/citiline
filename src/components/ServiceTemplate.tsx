@@ -89,9 +89,12 @@ export default function ServiceTemplate({ slug }: ServiceTemplateProps) {
                     <span className="text-accent font-black tracking-[0.5em] sm:tracking-[1em] uppercase text-[10px] sm:text-sm mb-6 sm:mb-8 block opacity-80 animate-fade-in">
                         Capabilities / {service.slug.replace("-", " ")}
                     </span>
-                    <h1 className="service-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[10vw] font-black tracking-tighter leading-[0.9] mb-8 sm:mb-12 uppercase break-words">
+                    <h1 className="service-title text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.85] mb-8 sm:mb-12 uppercase break-words px-4">
                         {service.title.split(" ").map((word, i) => (
-                            <span key={i} className={i % 2 === 1 ? "text-gradient italic block" : "block"}>
+                            <span key={i} className={cn(
+                                "inline-block mr-[0.2em] last:mr-0",
+                                i % 2 === 1 ? "text-gradient italic" : ""
+                            )}>
                                 {word}
                             </span>
                         ))}
