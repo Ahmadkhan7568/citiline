@@ -167,8 +167,13 @@ export default function AdminLayout({
                                 <p className="text-xs font-bold uppercase">Administrator</p>
                                 <p className="text-[10px] text-accent font-black tracking-widest uppercase opacity-80">Full Access</p>
                             </div>
-                            <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/20 overflow-hidden">
-                                <img src="https://ui-avatars.com/api/?name=Admin&background=00BCD4&color=fff" alt="Avatar" />
+                            <div className="w-10 h-10 rounded-full bg-accent/20 border border-accent/20 overflow-hidden relative">
+                                <Image
+                                    src="https://ui-avatars.com/api/?name=Admin&background=00BCD4&color=fff"
+                                    alt="Avatar"
+                                    fill
+                                    className="object-cover"
+                                />
                             </div>
                         </div>
                     </div>

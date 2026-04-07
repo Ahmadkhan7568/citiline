@@ -1,6 +1,7 @@
 /**
  * Core business logic for FBR-compliant Sales Tax Invoices.
  */
+import { nanoid } from "nanoid";
 
 export interface InvoiceItem {
     description: string;
@@ -44,7 +45,7 @@ export function calculateInvoiceTotals(
  * Mocks the FBR PRAL v1.12 Integration.
  * In production, this would call the RESTful FBR API and return an IRN and QR code.
  */
-export async function submitToFBR(invoiceData: any) {
+export async function submitToFBR(invoiceData: Record<string, unknown>) {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -61,4 +62,3 @@ export async function submitToFBR(invoiceData: any) {
     };
 }
 
-import { nanoid } from "nanoid";
