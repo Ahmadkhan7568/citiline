@@ -45,7 +45,7 @@ export default function CustomerManagement() {
             setCustomers(JSON.parse(saved));
         } else {
             // Initial Seed
-            const initial = [
+            const initial: Customer[] = [
                 { id: "CUST-001", companyName: "Dynamic Corp", contactPerson: "Ahmed Shah", email: "ahmed@dynamic.pk", phone: "0300-1234567", balance: 125000, status: "ACTIVE" },
                 { id: "CUST-002", companyName: "Global Solutions", contactPerson: "Sara Khan", email: "sara@global.com", phone: "0321-7654321", balance: 42500, status: "ACTIVE" },
             ];

@@ -38,7 +38,7 @@ export default function InvoicesPage() {
         if (saved) {
             setInvoices(JSON.parse(saved));
         } else {
-            const initial = [
+            const initial: Invoice[] = [
                 { id: "CIT-1024", customer: "Dynamic Corp", date: "Oct 24, 2026", total: 125000, status: "VERIFIED", irn: "FBR-88273611" },
                 { id: "CIT-1025", customer: "Global Solutions", date: "Oct 25, 2026", total: 42500, status: "PENDING", irn: null },
             ];
