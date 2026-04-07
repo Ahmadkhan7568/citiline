@@ -55,14 +55,14 @@ export default function Services() {
     return (
         <section ref={sectionRef} id="services" className="py-32 px-6 bg-zinc-950 relative overflow-hidden">
             <div className="max-w-7xl mx-auto relative z-10">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-                    <div>
+                <div className="flex flex-col md:flex-row items-center md:items-end justify-between mb-20 gap-8">
+                    <div className="flex flex-col items-center md:items-start text-center md:text-left">
                         <span className="text-accent font-black tracking-[0.5em] uppercase text-sm mb-4 block">Our Expertise</span>
-                        <h2 className="text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter uppercase leading-[0.8]">
+                        <h2 className="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.8]">
                             Capabili<span className="text-gradient italic text-glow">ties</span>
                         </h2>
                     </div>
-                    <div className="text-right">
+                    <div className="hidden md:block">
                         <span className="text-white/20 text-8xl font-black leading-none">/ 01</span>
                     </div>
                 </div>

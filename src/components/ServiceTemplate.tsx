@@ -85,18 +85,18 @@ export default function ServiceTemplate({ slug }: ServiceTemplateProps) {
                     <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
                 </div>
 
-                <div className="max-w-7xl mx-auto relative z-10 text-center">
-                    <span className="text-accent font-black tracking-[1em] uppercase text-sm mb-8 block opacity-80 animate-fade-in">
+                <div className="max-w-7xl mx-auto relative z-10 text-center px-4 sm:px-6">
+                    <span className="text-accent font-black tracking-[0.5em] sm:tracking-[1em] uppercase text-[10px] sm:text-sm mb-6 sm:mb-8 block opacity-80 animate-fade-in">
                         Capabilities / {service.slug.replace("-", " ")}
                     </span>
-                    <h1 className="service-title text-5xl sm:text-7xl md:text-[12vw] font-black tracking-tighter leading-none mb-12 uppercase">
+                    <h1 className="service-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[10vw] font-black tracking-tighter leading-[0.9] mb-8 sm:mb-12 uppercase break-words">
                         {service.title.split(" ").map((word, i) => (
                             <span key={i} className={i % 2 === 1 ? "text-gradient italic block" : "block"}>
                                 {word}
                             </span>
                         ))}
                     </h1>
-                    <p className="text-xl md:text-3xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-medium">
+                    <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-medium">
                         {service.shortDesc}
                     </p>
                 </div>

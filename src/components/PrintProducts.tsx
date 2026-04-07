@@ -75,12 +75,12 @@ export default function PrintProducts() {
     return (
         <section ref={containerRef} id="what-we-print" className="py-32 px-6">
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16">
-                    <div>
+                <div className="flex flex-col md:flex-row justify-between items-center md:items-end text-center md:text-left mb-16">
+                    <div className="flex flex-col items-center md:items-start">
                         <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter mb-4 uppercase">What We Print</h2>
                         <div className="w-48 h-1 bg-accent" />
                     </div>
-                    <p className="text-muted-foreground max-w-sm mt-8 md:mt-0 text-lg">
+                    <p className="text-muted-foreground max-w-sm mt-8 md:mt-0 text-lg mx-auto md:mx-0">
                         From massive outdoor displays to delicate corporate stationery. Precision is our signature.
                     </p>
                 </div>

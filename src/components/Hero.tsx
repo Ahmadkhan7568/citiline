@@ -71,7 +71,7 @@ export default function Hero() {
 
                 <h1
                     ref={titleRef}
-                    className="text-5xl sm:text-6xl md:text-[10vw] font-black tracking-tight leading-[0.8] mb-12 flex flex-col items-center"
+                    className="text-4xl sm:text-6xl lg:text-[10vw] font-black tracking-tight leading-[0.9] mb-8 sm:mb-12 flex flex-col items-center"
                 >
                     <div className="overflow-hidden flex">
                         {splitText("CITILINE")}
@@ -80,12 +80,12 @@ export default function Hero() {
                         ADVERTISING
                     </div>
 
-                    <div className="text-xl sm:text-2xl md:text-6xl font-light tracking-[0.2em] md:tracking-[0.4em] text-muted-foreground mt-8 flex flex-wrap justify-center items-center gap-4 md:gap-8">
-                        <span className="hero-sub uppercase">Printing</span>
-                        <span className="w-2 h-2 bg-accent rounded-full hidden md:block" />
-                        <span className="hero-sub text-white font-bold uppercase tracking-[0.2em] text-shadow-glow">Events</span>
-                        <span className="w-2 h-2 bg-accent rounded-full hidden md:block" />
-                        <span className="hero-sub uppercase">Agency</span>
+                    <div className="text-lg sm:text-2xl md:text-4xl lg:text-6xl font-light tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.4em] text-muted-foreground mt-6 sm:mt-8 flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-8 uppercase">
+                        <span className="hero-sub opacity-60">Printing</span>
+                        <span className="w-1.5 h-1.5 bg-accent rounded-full hidden sm:block" />
+                        <span className="hero-sub text-white font-black">Events</span>
+                        <span className="w-1.5 h-1.5 bg-accent rounded-full hidden sm:block" />
+                        <span className="hero-sub opacity-60">Agency</span>
                     </div>
                 </h1>
 
