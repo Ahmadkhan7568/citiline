@@ -16,16 +16,22 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `app/page.tsx`. The page## 🚀 Production Deployment (Vercel + Supabase)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To get this platform live, follow these final steps:
 
-## Learn More
+1.  **Database Sync**: Ensure you have run `npx drizzle-kit push` with your `DATABASE_URL` in `.env.local` to sync the schema to Supabase.
+2.  **Vercel Configuration**:
+    - Connect this repository to Vercel.
+    - Add the following **Environment Variables**:
+      - `DATABASE_URL`: Your Supabase connection string.
+3.  **Build**: Vercel will automatically detect the Next.js project and deploy it.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Management Access
+- **Admin Panel**: `/admin`
+- **User Dashboard**: `/dashboard`
+- **Auth**: `/login` / `/register`
+.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
