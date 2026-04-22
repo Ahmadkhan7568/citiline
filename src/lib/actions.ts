@@ -255,7 +255,8 @@ export async function getSettings() {
                 id: 1,
                 name: "Citiline Advertising",
                 ntn: "1958264-1",
-                environment: "Sandbox"
+                environment: "Sandbox",
+                logoUrl: "/invoicelogo.png"
             }).returning();
             settings = newSettings;
         }
