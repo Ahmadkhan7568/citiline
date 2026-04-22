@@ -42,9 +42,21 @@ export const invoices = pgTable("invoices", {
     discount: decimal("discount", { precision: 15, scale: 2 }).default("0").notNull(),
     total: decimal("total", { precision: 15, scale: 2 }).notNull(),
     status: invoiceStatusEnum("status").default("PENDING").notNull(),
+    fbrStatus: text("fbr_status").default("Pending").notNull(), // Pending, Submitted, Failed
     fbrIrn: text("fbr_irn"),
-    fbrQrPath: text("fbr_qr_path"),
+    fbrQrData: text("fbr_qr_data"), // Stores the PRAL pipe-separated string
     createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Invoice Items - Detail breakdown
+export const invoiceItems = pgTable("invoice_items", {
+    id: uuid("id").defaultRandom().primaryKey(),
+    invoiceId: uuid("invoice_id").references(() => invoices.id, { onDelete: "cascade" }).notNull(),
+    description: text("description").notNull(),
+    quantity: decimal("quantity", { precision: 10, scale: 2 }).notNull(),
+    unitPrice: decimal("unit_price", { precision: 15, scale: 2 }).notNull(),
+    taxAmount: decimal("tax_amount", { precision: 15, scale: 2 }).notNull(),
+    total: decimal("total", { precision: 15, scale: 2 }).notNull(),
 });
 
 // LedgerEntries - Double-Entry Financials
@@ -58,4 +70,17 @@ export const ledgerEntries = pgTable("ledger_entries", {
     description: text("description").notNull(),
     runningBalance: decimal("running_balance", { precision: 15, scale: 2 }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Company Settings - FBR Configuration
+export const companySettings = pgTable("company_settings", {
+    id: integer("id").primaryKey(),
+    name: text("name").default("Citiline Advertising").notNull(),
+    ntn: text("ntn").default("1958264-1").notNull(),
+    bearerToken: text("bearer_token"),
+    environment: text("environment").default("Sandbox").notNull(), // Sandbox, Production
+    address: text("address"),
+    phone: text("phone"),
+    email: text("email"),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
