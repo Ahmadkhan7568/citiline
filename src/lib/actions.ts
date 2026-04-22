@@ -222,3 +222,35 @@ export async function updateSettings(data: any) {
         return { success: false, error: error.message };
     }
 }
+// --- DASHBOARD ---
+
+export async function getDashboardStats() {
+    try {
+        const totalInvoices = await db.select({ count: sql<number>`count(*)` }).from(invoices);
+        const totalRevenue = await db.select({ sum: sql<string>`sum(total)` }).from(invoices);
+        const activeCustomers = await db.select({ count: sql<number>`count(*)` }).from(customers);
+        const fbrSuccess = await db.select({ count: sql<number>`count(*)` }).from(invoices).where(eq(invoices.fbrStatus, 'Submitted'));
+
+        return {
+            totalRevenue: totalRevenue[0]?.sum || "0",
+            activeCustomers: activeCustomers[0]?.count || 0,
+            fbrSuccess: fbrSuccess[0]?.count || 0,
+            totalInvoices: totalInvoices[0]?.count || 0
+        };
+    } catch (error) {
+        console.error("Dashboard stats error:", error);
+        return { totalRevenue: "0", activeCustomers: 0, fbrSuccess: 0, totalInvoices: 0 };
+    }
+}
+
+export async function getDashboardInvoices() {
+    try {
+        return await db.query.invoices.findMany({
+            with: { customer: true },
+            limit: 5,
+            orderBy: [desc(invoices.date)]
+        });
+    } catch (error) {
+        return [];
+    }
+}

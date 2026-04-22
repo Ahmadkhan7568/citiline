@@ -9,34 +9,76 @@ import {
     TrendingUp,
     CheckCircle2,
     Clock,
-    Plus
+    Plus,
+    Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const stats = [
-    { name: "Monthly Revenue", value: "PKR 2.4M", change: "+12.5%", trend: "up", icon: TrendingUp },
-    { name: "Active Accounts", value: "142", change: "+4", trend: "up", icon: Users },
-    { name: "FBR Submissions", value: "89", status: "100% Success", trend: "neutral", icon: CheckCircle2 },
-    { name: "Pending Ledger", value: "PKR 450k", change: "-PKR 20k", trend: "down", icon: FileText },
-];
-
-const recentInvoices = [
-    { id: "CIT-1024", customer: "Dynamic Corp", date: "Oct 24, 2026", amount: "PKR 125,000", status: "Verifed" },
-    { id: "CIT-1025", customer: "Global Solutions", date: "Oct 25, 2026", amount: "PKR 42,500", status: "Pending" },
-    { id: "CIT-1026", customer: "Nexus Media", date: "Oct 25, 2026", amount: "PKR 88,000", status: "Verifed" },
-    { id: "CIT-1027", customer: "The Brand Lab", date: "Oct 26, 2026", amount: "PKR 12,000", status: "Failed" },
-];
+import { useState, useEffect } from "react";
+import { getDashboardStats, getDashboardInvoices, getCustomers } from "@/lib/actions";
+import InvoiceEditor from "@/components/admin/InvoiceEditor";
 
 export default function AdminDashboard() {
+    const [stats, setStats] = useState<any[]>([]);
+    const [recentInvoices, setRecentInvoices] = useState<any[]>([]);
+    const [customers, setCustomers] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [showInvoiceEditor, setShowInvoiceEditor] = useState(false);
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        const [statsData, invoicesData, customersData] = await Promise.all([
+            getDashboardStats(),
+            getDashboardInvoices(),
+            getCustomers()
+        ]);
+
+        setStats([
+            { name: "Monthly Revenue", value: `PKR ${parseFloat(statsData.totalRevenue).toLocaleString()}`, change: "+12.5%", trend: "up", icon: TrendingUp },
+            { name: "Active Accounts", value: statsData.activeCustomers.toString(), change: "+4", trend: "up", icon: Users },
+            { name: "FBR Submissions", value: statsData.fbrSuccess.toString(), status: "100% Success", trend: "neutral", icon: CheckCircle2 },
+            { name: "Pending Invoices", value: statsData.totalInvoices.toString(), change: "", trend: "neutral", icon: FileText },
+        ]);
+
+        setRecentInvoices(invoicesData);
+        setCustomers(customersData);
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="flex h-[50vh] items-center justify-center">
+                <Loader2 className="animate-spin text-accent" size={32} />
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-10">
+            {showInvoiceEditor && (
+                <InvoiceEditor 
+                    customers={customers} 
+                    onClose={() => setShowInvoiceEditor(false)} 
+                    onSaved={() => {
+                        setShowInvoiceEditor(false);
+                        fetchData();
+                    }} 
+                />
+            )}
+
             {/* Page Header */}
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-black tracking-tighter uppercase mb-1">Live <span className="text-accent italic">Overview</span></h2>
                     <p className="text-muted-foreground text-sm font-medium">Real-time performance and financial KPIs.</p>
                 </div>
-                <button className="bg-accent hover:bg-accent/80 text-white px-6 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 text-sm shadow-xl shadow-accent/20">
+                <button 
+                    onClick={() => setShowInvoiceEditor(true)}
+                    className="bg-accent hover:bg-accent/80 text-white px-6 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 text-sm shadow-xl shadow-accent/20"
+                >
                     <Plus size={18} /> New Invoice
                 </button>
             </div>
@@ -81,7 +123,7 @@ export default function AdminDashboard() {
                 <div className="lg:col-span-2 glass-card rounded-[2.5rem] border border-white/5 p-8 overflow-hidden">
                     <div className="flex items-center justify-between mb-8">
                         <h3 className="text-xl font-bold uppercase tracking-tighter">Recent Invoices</h3>
-                        <button className="text-xs font-bold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity">View All</button>
+                        <a href="/admin/invoices" className="text-xs font-bold uppercase tracking-widest text-accent hover:opacity-70 transition-opacity">View All</a>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
@@ -95,20 +137,24 @@ export default function AdminDashboard() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
-                                {recentInvoices.map((inv) => (
+                                {recentInvoices.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="py-10 text-center text-muted-foreground text-xs uppercase font-bold tracking-widest">No Invoices Found</td>
+                                    </tr>
+                                ) : recentInvoices.map((inv) => (
                                     <tr key={inv.id} className="group hover:bg-white/[0.02] transition-colors">
-                                        <td className="py-4 font-bold text-sm">{inv.id}</td>
-                                        <td className="py-4 font-medium text-sm">{inv.customer}</td>
-                                        <td className="py-4 text-xs text-muted-foreground">{inv.date}</td>
-                                        <td className="py-4 font-black text-sm">{inv.amount}</td>
+                                        <td className="py-4 font-bold text-sm uppercase tracking-tighter">{inv.invoiceNumber}</td>
+                                        <td className="py-4 font-medium text-sm">{inv.customer?.companyName || "N/A"}</td>
+                                        <td className="py-4 text-xs text-muted-foreground">{new Date(inv.date).toLocaleDateString()}</td>
+                                        <td className="py-4 font-black text-sm">PKR {parseFloat(inv.total).toLocaleString()}</td>
                                         <td className="py-4 text-right">
                                             <span className={cn(
                                                 "text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-full",
-                                                inv.status === "Verifed" ? "bg-emerald-400/10 text-emerald-400" :
-                                                    inv.status === "Pending" ? "bg-amber-400/10 text-amber-400" :
+                                                inv.fbrStatus === "Submitted" ? "bg-emerald-400/10 text-emerald-400" :
+                                                    inv.fbrStatus === "Pending" ? "bg-amber-400/10 text-amber-400" :
                                                         "bg-rose-400/10 text-rose-400"
                                             )}>
-                                                {inv.status}
+                                                {inv.fbrStatus}
                                             </span>
                                         </td>
                                     </tr>
