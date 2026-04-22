@@ -37,7 +37,16 @@ export async function createCustomer(data: any) {
   }
 }
 
-// --- INVOICES ---
+export async function getInvoiceItems(invoiceId: string) {
+  try {
+    return await db.query.invoiceItems.findMany({
+      where: eq(invoiceItems.invoiceId, invoiceId)
+    });
+  } catch (error) {
+    console.error("Failed to fetch invoice items:", error);
+    return [];
+  }
+}
 
 export async function getInvoices() {
   try {
@@ -91,6 +100,50 @@ export async function createInvoice(invoiceData: any, itemsData: any[]) {
       });
 
       return newInvoice;
+    });
+
+    revalidatePath("/admin/invoices");
+    revalidatePath("/admin/ledger");
+    return { success: true, invoice: result };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function updateInvoice(invoiceId: string, invoiceData: any, itemsData: any[]) {
+  try {
+    const result = await db.transaction(async (tx) => {
+      // 1. Update Invoice
+      await tx.update(invoices).set({
+        customerId: invoiceData.customerId,
+        subtotal: invoiceData.subtotal.toString(),
+        taxAmount: invoiceData.taxAmount.toString(),
+        total: invoiceData.total.toString(),
+        discount: invoiceData.discount?.toString() || "0",
+      }).where(eq(invoices.id, invoiceId));
+
+      // 2. Refresh Items
+      await tx.delete(invoiceItems).where(eq(invoiceItems.invoiceId, invoiceId));
+      
+      for (const item of itemsData) {
+        await tx.insert(invoiceItems).values({
+          invoiceId: invoiceId,
+          description: item.description,
+          quantity: item.quantity.toString(),
+          unitPrice: item.unitPrice.toString(),
+          taxAmount: item.taxAmount.toString(),
+          total: item.total.toString(),
+        });
+      }
+
+      // 3. Update Ledger Entry
+      await tx.update(ledgerEntries).set({
+        customerId: invoiceData.customerId,
+        amount: invoiceData.total.toString(),
+        description: `Invoice ${invoiceData.invoiceNumber} (Updated)`,
+      }).where(eq(ledgerEntries.invoiceId, invoiceId));
+
+      return { id: invoiceId };
     });
 
     revalidatePath("/admin/invoices");
@@ -181,7 +234,7 @@ export async function submitToFBR(invoiceId: string) {
       }).where(eq(invoices.id, invoiceId));
 
       revalidatePath("/admin/invoices");
-      return { success: true, irn };
+      return { success: true, irn, qrData };
     } else {
       throw new Error(fbrRes.data.message || "FBR rejected the invoice");
     }
@@ -200,12 +253,15 @@ export async function getSettings() {
             // Create default settings if first time
             const [newSettings] = await db.insert(companySettings).values({
                 id: 1,
-                name: "Citiline Advertising"
+                name: "Citiline Advertising",
+                ntn: "1958264-1",
+                environment: "Sandbox"
             }).returning();
             settings = newSettings;
         }
         return settings;
     } catch (error) {
+        console.error("getSettings error:", error);
         return null;
     }
 }

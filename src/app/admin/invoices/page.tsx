@@ -12,14 +12,13 @@ import {
     AlertCircle,
     RefreshCw,
     X,
-    Hash,
-    Receipt,
     Calculator,
-    Loader2
+    Loader2,
+    Edit
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatPKR } from "@/lib/ledger";
-import { getInvoices, submitToFBR, getCustomers, createInvoice } from "@/lib/actions";
+import { getInvoices, submitToFBR, getCustomers, createInvoice, getInvoiceItems } from "@/lib/actions";
 import InvoiceEditor from "@/components/admin/InvoiceEditor";
 
 interface Invoice {
@@ -41,6 +40,8 @@ export default function InvoicesPage() {
     const [isMounted, setIsMounted] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState<string | null>(null);
+    const [editingInvoice, setEditingInvoice] = useState<any>(null);
+    const [isFetchingItems, setIsFetchingItems] = useState(false);
 
     async function loadData() {
         setIsLoading(true);
@@ -67,6 +68,14 @@ export default function InvoicesPage() {
         }
     };
 
+    const handleEdit = async (inv: Invoice) => {
+        setIsFetchingItems(true);
+        const items = await getInvoiceItems(inv.id);
+        setEditingInvoice({ ...inv, items });
+        setIsFetchingItems(false);
+        setIsEditorOpen(true);
+    };
+
     if (!isMounted) return null;
 
     return (
@@ -82,7 +91,10 @@ export default function InvoicesPage() {
                         <RefreshCw size={18} className={isLoading ? "animate-spin" : ""} /> Refresh
                     </button>
                     <button
-                        onClick={() => setIsEditorOpen(true)}
+                        onClick={() => {
+                            setEditingInvoice(null);
+                            setIsEditorOpen(true);
+                        }}
                         className="bg-accent hover:bg-accent/80 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 shadow-xl shadow-accent/20"
                     >
                         <Plus size={18} /> New Invoice
@@ -155,6 +167,13 @@ export default function InvoicesPage() {
                                         </td>
                                         <td className="p-8 text-right align-middle">
                                             <div className="flex items-center justify-end gap-2">
+                                                <button 
+                                                    disabled={isFetchingItems}
+                                                    onClick={() => handleEdit(inv)} 
+                                                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all text-emerald-400 group-hover:border-emerald-400/30"
+                                                >
+                                                    {isFetchingItems ? <Loader2 size={16} className="animate-spin" /> : <Edit size={16} />}
+                                                </button>
                                                 <button onClick={() => window.print()} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all"><Printer size={16} /></button>
                                                 <button className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-accent hover:text-white transition-all"><Download size={16} /></button>
                                             </div>
@@ -171,9 +190,14 @@ export default function InvoicesPage() {
             {isEditorOpen && (
                 <InvoiceEditor 
                     customers={customers} 
-                    onClose={() => setIsEditorOpen(false)} 
+                    initialInvoice={editingInvoice}
+                    onClose={() => {
+                        setIsEditorOpen(false);
+                        setEditingInvoice(null);
+                    }} 
                     onSaved={() => {
                         setIsEditorOpen(false);
+                        setEditingInvoice(null);
                         loadData();
                     }}
                 />

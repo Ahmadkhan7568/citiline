@@ -82,5 +82,7 @@ export const companySettings = pgTable("company_settings", {
     address: text("address"),
     phone: text("phone"),
     email: text("email"),
+    gst: text("gst"),
+    logoUrl: text("logo_url"),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

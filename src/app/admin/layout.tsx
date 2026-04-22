@@ -103,7 +103,7 @@ export default function AdminLayout({
     return (
         <div className="flex h-screen bg-[#050505] text-white overflow-hidden font-sans">
             {/* Desktop Sidebar */}
-            <aside className="hidden lg:flex w-72 border-r border-white/5 bg-black/40 backdrop-blur-xl flex-col p-6">
+            <aside className="hidden lg:flex w-72 border-r border-white/5 bg-black/40 backdrop-blur-xl flex-col p-6 print:hidden">
                 <SidebarContent />
             </aside>
 
@@ -140,7 +140,7 @@ export default function AdminLayout({
             {/* Main Content */}
             <main className="flex-1 flex flex-col overflow-hidden relative">
                 {/* Header */}
-                <header className="h-20 border-b border-white/5 lg:px-8 px-4 flex items-center justify-between bg-black/20 backdrop-blur-md z-40">
+                <header className="h-20 border-b border-white/5 lg:px-8 px-4 flex items-center justify-between bg-black/20 backdrop-blur-md z-40 print:hidden">
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => setIsMobileMenuOpen(true)}

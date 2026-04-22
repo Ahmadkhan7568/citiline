@@ -88,12 +88,67 @@ export default function SettingsPage() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent/30 transition-all font-medium"
                             />
                         </div>
+                        <div className="space-y-2 md:col-span-2">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Logo Preview</label>
+                            <div className="w-full bg-white/5 border border-white/10 rounded-3xl p-8 flex items-center justify-center min-h-[150px] relative overflow-hidden group">
+                                {settings?.logoUrl ? (
+                                    <img 
+                                        src={settings.logoUrl} 
+                                        alt="Logo Preview" 
+                                        className="max-h-24 w-auto object-contain relative z-10 transition-transform group-hover:scale-105"
+                                        onError={(e) => {
+                                            (e.target as HTMLImageElement).src = 'https://placehold.co/400x100?text=Invalid+Logo+URL';
+                                        }}
+                                    />
+                                ) : (
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-zinc-600 italic">No Logo Configured</div>
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent pointer-events-none" />
+                            </div>
+                        </div>
+                        <div className="space-y-2 md:col-span-2">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Logo URL (Remote or Base64)</label>
+                            <input
+                                type="text"
+                                value={settings?.logoUrl || ""}
+                                onChange={(e) => setSettings({...settings, logoUrl: e.target.value})}
+                                placeholder="https://..."
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent/30 transition-all font-medium"
+                            />
+                        </div>
                         <div className="space-y-2">
                             <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Official NTN</label>
                             <input
                                 type="text"
                                 value={settings?.ntn || ""}
                                 onChange={(e) => setSettings({...settings, ntn: e.target.value})}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent/30 transition-all font-medium"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Sales Tax Reg (GST)</label>
+                            <input
+                                type="text"
+                                value={settings?.gst || ""}
+                                onChange={(e) => setSettings({...settings, gst: e.target.value})}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent/30 transition-all font-medium"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Bank Details (A/C #...)</label>
+                            <input
+                                type="text"
+                                value={settings?.phone || ""}
+                                onChange={(e) => setSettings({...settings, phone: e.target.value})}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent/30 transition-all font-medium"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground ml-2">Official Email</label>
+                            <input
+                                type="text"
+                                value={settings?.email || ""}
+                                onChange={(e) => setSettings({...settings, email: e.target.value})}
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent/30 transition-all font-medium"
                             />
                         </div>
