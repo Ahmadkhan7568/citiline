@@ -189,11 +189,12 @@ export async function submitToFBR(invoiceId: string) {
       buyerAddress: inv.customer?.address || "",
       buyerRegistrationType: inv.customer?.ntn ? "Registered" : "Unregistered",
       invoiceRefNo: "",
+      scenarioId: settings.environment === 'Sandbox' ? "SN001" : undefined,
       items: items.map(item => ({
-        hsCode: "9813.0000",
+        hsCode: item.description.toLowerCase().includes("advert") ? "9813.0000" : "9813.0000", // Standard for services
         productDescription: item.description,
         rate: "18%",
-        uoM: "Numbers",
+        uoM: "Numbers, pieces, units",
         quantity: parseFloat(item.quantity.toString()),
         totalValues: parseFloat(item.total.toString()),
         valueSalesExcludingST: parseFloat(item.unitPrice.toString()) * parseFloat(item.quantity.toString()),
