@@ -1,0 +1,56 @@
+<Page x:Class="Citiline.Desktop.Pages.LedgerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Financial Ledger">
+    <Grid Margin="32" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="General Ledger" FontSize="32" FontWeight="Black" />
+            <TextBlock Text="Comprehensive Financial Records &amp; Cash Flow" FontSize="14" Foreground="#64748B" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+            <ui:Button Content="Add Manual Entry" Appearance="Primary" Margin="0,0,8,0" Click="AddEntry_Click">
+                <ui:Button.Icon>
+                    <ui:SymbolIcon Symbol="Add24" />
+                </ui:Button.Icon>
+            </ui:Button>
+            <ui:Button Content="Export to Excel" />
+        </StackPanel>
+
+        <Border Grid.Row="2" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
+            <Grid>
+                <DataGrid x:Name="LedgerGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          Background="White" BorderThickness="0" GridLinesVisibility="Horizontal"
+                          RowHeight="44" HorizontalGridLinesBrush="#F1F5F9" RowHeaderWidth="0">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#F8FAFC" />
+                            <Setter Property="Foreground" Value="#64748B" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="Padding" Value="16,10" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="#E2E8F0" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Date" Binding="{Binding TransactionDate, StringFormat=yyyy-MM-dd}" Width="120" />
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />
+                        <DataGridTextColumn Header="Debit (Rs)" Binding="{Binding Debit, StringFormat={}{0:N0}}" Width="130" />
+                        <DataGridTextColumn Header="Credit (Rs)" Binding="{Binding Credit, StringFormat={}{0:N0}}" Width="130" />
+                        <DataGridTextColumn Header="Balance (Rs)" Binding="{Binding Balance, StringFormat={}{0:N0}}" Width="140" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock x:Name="NoDataText" Text="No transactions recorded yet."
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60,0,0" Opacity="0.5" />
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

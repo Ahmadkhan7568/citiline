@@ -13,9 +13,12 @@ import {
     Save,
     RefreshCw,
     Database,
-    Loader2
+    Loader2,
+    Download,
+    Upload
 } from "lucide-react";
 import { getSettings, updateSettings } from "@/lib/actions";
+import { BackupService } from "@/lib/tauri/backup";
 
 export default function SettingsPage() {
     const [settings, setSettings] = useState<any>(null);
@@ -209,24 +212,57 @@ export default function SettingsPage() {
                     </div>
                 </section>
 
-                {/* Database & Performance */}
-                <section className="glass-card rounded-[2.5rem] border border-white/5 p-10">
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="p-3 bg-emerald-400/10 rounded-2xl border border-emerald-400/20">
-                            <Database className="text-emerald-400" size={24} />
+                {/* Data Portability & Persistence */}
+                <section className="glass-card rounded-[2.5rem] border border-white/5 p-10 relative overflow-hidden group">
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/5 rounded-full blur-3xl -ml-32 -mb-32" />
+                    <div className="flex items-center justify-between mb-8 relative z-10">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-emerald-400/10 rounded-2xl border border-emerald-400/20">
+                                <Database className="text-emerald-400" size={24} />
+                            </div>
+                            <h3 className="text-xl font-bold uppercase tracking-tight text-white">Data Portability</h3>
                         </div>
-                        <h3 className="text-xl font-bold uppercase tracking-tight">Persistence Layer</h3>
+                        <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500 italic">SQLite v3 Mirror</div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2">Supabase Engine</p>
-                            <p className="text-sm font-bold text-emerald-400 flex items-center gap-2">
-                                <Zap size={14} /> Production Cluster: aws-1-ap-northeast-1
-                            </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-[2rem] space-y-4">
+                            <div className="flex items-center gap-3">
+                                <Download className="text-accent" size={18} />
+                                <h4 className="text-sm font-bold uppercase tracking-tight">Manual Backup</h4>
+                            </div>
+                            <p className="text-[10px] text-zinc-500 leading-relaxed font-medium">Export all invoices, ledger, and PRAL data to a local `.db` file for safe-keeping.</p>
+                            <button 
+                                type="button"
+                                onClick={() => new BackupService().exportDatabase()}
+                                className="w-full py-3 bg-accent/10 border border-accent/20 rounded-xl text-[10px] font-black uppercase tracking-widest text-accent hover:bg-accent hover:text-white transition-all shadow-lg shadow-accent/5"
+                            >
+                                Download Database
+                            </button>
                         </div>
-                        <div className="flex items-center justify-end">
-                            <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 bg-white/5 rounded-full border border-white/10">v4.12 Stable</span>
+
+                        <div className="p-6 bg-white/5 border border-white/10 rounded-[2rem] space-y-4">
+                            <div className="flex items-center gap-3">
+                                <Upload className="text-rose-400" size={18} />
+                                <h4 className="text-sm font-bold uppercase tracking-tight">Restore Data</h4>
+                            </div>
+                            <p className="text-[10px] text-zinc-500 leading-relaxed font-medium">Upload a previously exported backup file to restore your entire ERP state. <b>Warning: Overwrites current data.</b></p>
+                            <button 
+                                type="button"
+                                onClick={() => new BackupService().importDatabase()}
+                                className="w-full py-3 bg-rose-400/5 border border-rose-400/20 rounded-xl text-[10px] font-black uppercase tracking-widest text-rose-400 hover:bg-rose-500 hover:text-white transition-all"
+                            >
+                                Restore from File
+                            </button>
                         </div>
+                    </div>
+
+                    <div className="mt-8 pt-8 border-t border-white/5 flex items-center justify-between relative z-10">
+                        <div className="flex items-center gap-3">
+                             <Zap className="text-emerald-400" size={14} />
+                             <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">Local Mirror: aws-mir-1 • Production Stable</span>
+                        </div>
+                        <div className="text-[9px] font-black uppercase tracking-widest px-3 py-1 bg-white/5 rounded-full border border-white/10 text-zinc-500">v4.12 Mirror Schema</div>
                     </div>
                 </section>
             </div>

@@ -1,0 +1,53 @@
+<Page x:Class="Citiline.Desktop.Pages.PayrollPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Payroll &amp; Salaries">
+    <Grid Margin="32" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="Payroll &amp; Disbursement" FontSize="32" FontWeight="Black" />
+            <TextBlock Text="Monthly Salary Generation &amp; Expense Tracking" FontSize="14" Foreground="#64748B" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,16">
+            <ComboBox x:Name="MonthPicker" Width="180" Height="36" VerticalContentAlignment="Center" />
+            <ui:Button Content="Generate Salaries" Appearance="Primary" Margin="12,0,0,0" Click="GenerateSalaries_Click" />
+            <ui:Button Content="Export PDF" Margin="8,0,0,0" />
+        </StackPanel>
+
+        <Border Grid.Row="2" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
+            <Grid>
+                <DataGrid x:Name="PayrollGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          Background="White" BorderThickness="0" GridLinesVisibility="Horizontal"
+                          RowHeight="44" HorizontalGridLinesBrush="#F1F5F9" RowHeaderWidth="0">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#F8FAFC" />
+                            <Setter Property="Foreground" Value="#64748B" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="Padding" Value="16,10" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="#E2E8F0" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Employee Name" Binding="{Binding EmployeeName}" Width="*" />
+                        <DataGridTextColumn Header="Month" Binding="{Binding SalaryMonth}" Width="140" />
+                        <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat=₨ {0:N0}}" Width="150" />
+                        <DataGridTextColumn Header="Payment Date" Binding="{Binding PaymentDate, StringFormat=yyyy-MM-dd}" Width="140" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock x:Name="NoDataText" Text="No payroll records yet. Select a month and click 'Generate Salaries'."
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60,0,0" Opacity="0.5" />
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

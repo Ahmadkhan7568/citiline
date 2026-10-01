@@ -6,10 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tauri": "tauri"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.102.1",
+    "@tauri-apps/plugin-dialog": "^2.7.0",
+    "@tauri-apps/plugin-fs": "^2.5.0",
+    "@tauri-apps/plugin-process": "^2.3.1",
+    "@tauri-apps/plugin-sql": "^2.4.0",
+    "@tauri-apps/plugin-window-state": "^2.4.1",
+    "@types/qrcode": "^1.5.6",
     "axios": "^1.15.2",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.1",
@@ -21,12 +28,15 @@
     "nanoid": "^5.1.7",
     "next": "16.2.2",
     "pg": "^8.20.0",
+    "qrcode": "^1.5.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/cli": "^2.10.1",
     "@types/node": "^20",
     "@types/pg": "^8.11.0",
     "@types/react": "^19",

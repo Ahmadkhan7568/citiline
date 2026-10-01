@@ -15,9 +15,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Citiline | Creative Advertising & Printing Agency",
-  description: "Where creativity meets precision. Citiline is a premium advertising and high-end printing agency focused on visual storytelling.",
+  title: "Citiline ERP",
+  description: "High-performance Desktop ERP for Advertising & Printing Operations",
 };
+
+import { TauriProvider } from "@/components/TauriProvider";
+import SyncStatus from "@/components/SyncStatus";
 
 export default function RootLayout({
   children,
@@ -29,9 +32,12 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} min-h-full bg-background text-foreground`}>
         <div className="noise-overlay" />
         <BackgroundElements />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <TauriProvider>
+          <SyncStatus />
+          <div className="relative flex-1 flex flex-col">
+            {children}
+          </div>
+        </TauriProvider>
       </body>
     </html>
   );

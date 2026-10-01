@@ -17,20 +17,26 @@ import {
     CreditCard,
     Zap,
     Menu,
-    X
+    X,
+    Calculator,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import WindowTitleBar from "@/components/admin/WindowTitleBar";
 
 const sidebarLinks = [
     { name: "Overview", icon: LayoutDashboard, href: "/admin" },
+    { name: "POS Terminal", icon: Calculator, href: "/admin/pos" },
     { name: "CRM / Customers", icon: Users, href: "/admin/customers" },
     { name: "Invoicing (FBR)", icon: FileText, href: "/admin/invoices" },
-    { name: "Ledgers", icon: BarChart3, href: "/admin/ledger" },
-    { name: "Intelligence", icon: BarChart3, href: "/admin/reports" },
-    { name: "Config", icon: Settings, href: "/admin/settings" },
+    { name: "Financial Ledgers", icon: CreditCard, href: "/admin/ledger" },
+    { name: "Expenses / Spend", icon: ArrowDownRight, href: "/admin/expenses" },
+    { name: "HR Management", icon: Users, href: "/admin/hr" },
+    { name: "Payroll & Salaries", icon: Zap, href: "/admin/payroll" },
+    { name: "Business Intelligence", icon: BarChart3, href: "/admin/reports" },
+    { name: "Global Config", icon: Settings, href: "/admin/settings" },
 ];
 
 export default function AdminLayout({
@@ -101,7 +107,8 @@ export default function AdminLayout({
     );
 
     return (
-        <div className="flex h-screen bg-[#050505] text-white overflow-hidden font-sans">
+        <div className="flex h-screen bg-[#050505] text-white overflow-hidden font-sans pt-10">
+            <WindowTitleBar />
             {/* Desktop Sidebar */}
             <aside className="hidden lg:flex w-72 border-r border-white/5 bg-black/40 backdrop-blur-xl flex-col p-6 print:hidden">
                 <SidebarContent />

@@ -39,3 +39,25 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+compile_log.txt
+tauri_help.txt
+
+# Rust / Tauri
+src-tauri/target/
+src-tauri/target_old/
+src-tauri/isolated_target/
+src-tauri/.cargo_silo/
+src-tauri/*.txt
+.cargo_silo/
+target/
+target_old/
+
+# .NET
+dotnet_app/.vs/
+dotnet_app/**/bin/
+dotnet_app/**/obj/
+dotnet_app/**/*.txt
+dotnet_app/**/*.log
+
+
+
